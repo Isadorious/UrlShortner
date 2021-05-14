@@ -28,3 +28,24 @@ router.post('/login', async(req, res, next) => {
 		});
 	})(req, res, next);
 });
+
+router.post('/register', async(req, res, next) => {
+	passport.authenticate('register', (err, user, info) => {
+		if (err) console.log(err);
+		if(info != undefined) res.send(info.message);
+		else 
+			req.logIn(user, async err => {
+				if(err) return res.json({message: 'Unable to register.', error: err});
+				try {
+					const user = await models.user.findOne({where: {username: req.body.username}});
+					user.email = req.body.email;
+					await user.save();
+					res.status(200).send({message: 'user created'});
+				} catch (error) {
+					const user = await models.user.findOne({where: {username: req.body.username}});
+					await user.destroy();
+					res.status(500).json({message: 'An error occurred', error: error});
+				}
+			});
+	})(req, res, next);
+});
