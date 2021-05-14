@@ -49,3 +49,50 @@ router.post('/register', async(req, res, next) => {
 			});
 	})(req, res, next);
 });
+
+router.put('/:id', async (req, res, next) => {
+	passport.authenticate('jwt', async (err, user, info) => {
+		if(err) console.log(err);
+		if(info != undefined) {
+			res.send(info.message);
+			next();
+		} else {
+			if(user.id === req.params.id && req.body.id === req.params.id) // Check user is only trying to update themselves
+				try {
+					const updatedUser = await models.user.update(req.body, {where: {id: req.params.id}});
+					res.status(200).json({message: 'Updated user successfully!', user: updatedUser.getUserData()});
+				} catch (error) {
+					res.status(500).json({message: 'Unable to update user', error: error});
+				}
+			else 
+				res.status(400).json({message: 'Unable to update user due to bad request'});	
+		}
+	})(req, res, next);
+});
+
+router.get('/:id', async(req, res, next) => {
+	passport.authenticate('jwt', async (err, user, info) => {
+		if(err) 
+			console.log(err);
+		
+		if(info != undefined){ 
+			res.send(info.message);
+			next();
+		} else {
+			if(user.id === req.params.id) {
+				models.user.findByPk(req.params.id).then((user) => {
+					if(user == null) res.json({message: 'No user found'});
+					else {
+						const responseData = user.getUserData();
+						res.json({user: responseData});
+					}
+				}).catch((error) => {
+					console.log(error);
+					res.status(500).json({message: 'there was error', error: error});
+				});
+			} else {
+				res.status(401).json({message: 'Unauthorized'});
+			}
+		}
+	})(req, res, next);
+});
