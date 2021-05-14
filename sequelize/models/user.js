@@ -32,6 +32,11 @@ module.exports = (sequelize) => {
 		return await bcrypt.compare(password, this.password);
 	};
 
+	User.prototype.getUserData = function() {
+		const user = {id: this.id, username: this.username, email: this.email};
+		return user;
+	};
+
 	User.beforeCreate(setSaltAndPassword);
 	User.beforeUpdate(setSaltAndPassword);
 
