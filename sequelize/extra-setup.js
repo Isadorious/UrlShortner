@@ -10,3 +10,5 @@ function applyExtraSetup(sequelize) {
 	});
 	link.belongsTo(user);
 }
+
+module.exports = { applyExtraSetup };

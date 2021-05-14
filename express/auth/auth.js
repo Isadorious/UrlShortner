@@ -36,7 +36,7 @@ passport.use('login', new localStrategy({
 }));
 
 passport.use('jwt', new jwtStrategy ({
-	jwtFromRequest: extractJWT.fromAuthHeaderWithScheme('JWT'),
+	jwtFromRequest: extractJwt.fromAuthHeaderWithScheme('JWT'),
 	secretOrKey: `${process.env.SECRET_KEY}`,
 }, async (payload, done) => {
 	try {

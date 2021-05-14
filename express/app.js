@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
-const pasport = require('passport');
+const passport = require('passport');
 
 const app = express();
 
