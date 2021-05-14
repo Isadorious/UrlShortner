@@ -1,0 +1,20 @@
+{
+  "name": "UrlShortner",
+  "version": "1.0.0",
+  "description": "Url Shortner developed using Node.js & MariaDB",
+  "main": "index.js",
+  "repository": "https://Isadorious@github.com/Isadorious/UrlShortner.git",
+  "author": "Chris Groutage <contact@cgroutage.com>",
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mariadb": "^2.5.3",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^6.6.2"
+  }
+}
