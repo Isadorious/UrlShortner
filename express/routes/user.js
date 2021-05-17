@@ -34,7 +34,7 @@ router.post('/register', async(req, res, next) => {
 		if (err) console.log(err);
 		if(info != undefined) res.send(info.message);
 		else 
-			req.logIn(user, async err => {
+			req.logIn(user, {session: false}, async err => {
 				if(err) return res.json({message: 'Unable to register.', error: err});
 				try {
 					const user = await models.user.findOne({where: {username: req.body.username}});
