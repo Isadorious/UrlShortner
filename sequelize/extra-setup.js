@@ -8,7 +8,6 @@ function applyExtraSetup(sequelize) {
 			allowNull: true,
 		}
 	});
-	link.belongsTo(user);
 }
 
 module.exports = { applyExtraSetup };
