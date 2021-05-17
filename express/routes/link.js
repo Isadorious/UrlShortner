@@ -49,7 +49,7 @@ router.get('/', async (req, res, next) => {
 			next();
 		} else {
 			// Only get the links a user is the creator for
-			const links = await models.links.findAll({where: {creatorId: user.id}});
+			const links = await models.link.findAll({where: {creatorId: user.id}});
 			if(links == null) res.status(404).json({message: 'Links not found'});
 			else res.json({links: links});
 		}	
