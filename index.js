@@ -20,6 +20,9 @@ async function init() {
 	await assertDatabaseConnectionOk();
 	console.log(`Starting link shortner on port ${PORT}...`);
 
+	sequelize.models.user.sync();
+	sequelize.models.link.sync();
+
 	app.listen(PORT, () => {
 		console.log(`Express server started on port ${PORT}.`);
 	});
