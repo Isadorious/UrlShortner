@@ -29,6 +29,7 @@ router.post('/', async (req, res, next) => {
 			res.send(info.message);
 			next();
 		} else {
+			if(req.body.creatorId !== user.id) req.body.creatorId = user.id;
 				const link = await models.link.create({
 					shortUrl: generateUrl(6),
 					targetUrl: req.body.targetUrl,
