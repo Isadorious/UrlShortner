@@ -40,7 +40,14 @@ router.post('/register', async(req, res, next) => {
 					const user = await models.user.findOne({where: {username: req.body.username}});
 					user.email = req.body.email;
 					await user.save();
-					res.status(200).send({message: 'user created'});
+					const expiryTime = Date.now() + (60*60*2*1000);
+					const token = jwt.sign({username: user.username, email: user.email}, process.env.SECRET_KEY, {expiresIn: (Math.floor(expiryTime / 1000))});
+					res.status(200).send({
+						message: 'user created', 
+						token: token, 
+						expiryTime: new Date(expiryTime), 
+						id: user.id,
+					});
 				} catch (error) {
 					const user = await models.user.findOne({where: {username: req.body.username}});
 					await user.destroy();
