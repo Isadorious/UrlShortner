@@ -11,6 +11,10 @@ module.exports = (sequelize) => {
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: false,
+		},
+		usageCount: {
+			type: DataTypes.INTEGER,
+			default: 0,
 		}
 	}, {});
 	return Link;

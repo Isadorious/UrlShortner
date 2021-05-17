@@ -15,6 +15,7 @@ router.get('/:shortUrl', async(req, res, next) => {
 	const link = await models.link.findOne({where: {shortUrl: req.params.shortUrl}});
 	if(link !== undefined) {
 		res.redirect(link.targetUrl);
+		await link.increment('usageCount');
 	} else {
 		res.redirect('/');
 	}
