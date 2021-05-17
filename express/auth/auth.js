@@ -11,7 +11,7 @@ passport.use('register', new localStrategy({
 }, async (username, password, done) => {
 	try {
 		const user = await models.user.findOne({where: {username: username}});
-		if (user !== undefined) return done(null, false, {message: 'Username already taken'}); 
+		if (user !== null) return done(null, false, {message: 'Username already taken'}); 
 		const newUser = await models.user.create({username, password});
 		return done(null, newUser);
 	} catch (error) {
@@ -26,7 +26,7 @@ passport.use('login', new localStrategy({
 }, async (username, password, done) => {
 	try {
 		const user = await models.user.findOne({where: {username: username}});
-		if(user === undefined) return done(null, false, {message: 'Unable to find username'});
+		if(user === null) return done(null, false, {message: 'Unable to find username'});
 		const isValid = await user.isValidPassword(password);
 		if(!isValid) return done(null, false, {message: 'Invalid password'});
 		return done(null, user);
