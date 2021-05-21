@@ -51,7 +51,7 @@ router.post('/register', async(req, res, next) => {
 				} catch (error) {
 					const user = await models.user.findOne({where: {username: req.body.username}});
 					await user.destroy();
-					res.status(500).json({message: 'An error occurred', error: error});
+					res.status(500).json({message: 'Unable to register', error: error});
 				}
 			});
 	})(req, res, next);
