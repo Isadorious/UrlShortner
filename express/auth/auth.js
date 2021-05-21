@@ -15,7 +15,7 @@ passport.use('register', new localStrategy({
 		const newUser = await models.user.create({username, password});
 		return done(null, newUser);
 	} catch (error) {
-		done(error, false, {message: 'Unable to create account!'});
+		done(error, false, {message: 'Unable to create account!', status: 500,});
 	}
 }));
 
@@ -26,12 +26,12 @@ passport.use('login', new localStrategy({
 }, async (username, password, done) => {
 	try {
 		const user = await models.user.findOne({where: {username: username}});
-		if(user === null) return done(null, false, {message: 'Unable to find username'});
+		if(user === null) return done(null, false, {message: 'Unable to find username', status: 401,});
 		const isValid = await user.isValidPassword(password);
-		if(!isValid) return done(null, false, {message: 'Invalid password'});
+		if(!isValid) return done(null, false, {message: 'Invalid password', status: 401,});
 		return done(null, user);
 	} catch (error) {
-		return done(error, false, {message: 'Unable to find username'});
+		return done(error, false, {message: 'Unable to find username', status: 401,});
 	}
 }));
 
@@ -42,13 +42,13 @@ passport.use('jwt', new jwtStrategy ({
 	try {
 		// Payload has username, email, iat (issued at) & exp (expiry)
 		if(Math.floor(Date.now() / 1000) > (payload.exp / 2)) 
-			done(null, false, {message: 'Authentication Failed - Token Expired'});
+			done(null, false, {message: 'Authentication Failed - Token Expired', status: 401,});
 		else {
 			const user = await models.user.findOne({where: {username: payload.username, email: payload.email}});
-			if(user === null) done(null, false, {message: 'Authentication failed'});
+			if(user === null) done(null, false, {message: 'Authentication failed', status: 401,});
 			else done(null, user);
 		}
 	} catch (error) {
-		done(error, false, {message: 'Authentication failed'});
+		done(error, false, {message: 'Authentication failed', status: 401,});
 	}
 }));

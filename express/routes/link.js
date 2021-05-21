@@ -27,7 +27,7 @@ router.post('/', async (req, res, next) => {
 			console.log(err);	
 		if(info != undefined){ 
 			console.log('info defined');
-			res.send(info.message);
+			res.json({message: info.message, status : info.status != undefined ? info.status : 401});
 			next();
 		} else {
 			if(req.body.creatorId !== user.id) req.body.creatorId = user.id;
@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
 			console.log(err);
 		if(info != undefined){ 
 			console.log('info defined');
-			res.send(info.message);
+			res.json({message: info.message, status : info.status != undefined ? info.status : 401});
 			next();
 		} else {
 			// Only get the links a user is the creator for

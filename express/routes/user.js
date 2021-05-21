@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 
 router.post('/login', async(req, res, next) => {
 	passport.authenticate('login', (err, user, info) => {
-		if(err) return res.json({message: 'Unable to login. Are your details correct?', error: err});
-		if(info !== undefined) return res.json({message: info.message});
+		if(err) return res.json({message: 'Unable to login. Are your details correct?', error: err, status: 401});
+		if(info !== undefined) return res.json({message: info.message, status : info.status != undefined ? info.status : 401});
 		req.logIn(user, {session: false}, async err => {
 			if(err) return res.json({message: 'Unable to login. Are your details correct?', error: err});
 			try {
@@ -32,7 +32,7 @@ router.post('/login', async(req, res, next) => {
 router.post('/register', async(req, res, next) => {
 	passport.authenticate('register', (err, user, info) => {
 		if (err) console.log(err);
-		if(info != undefined) res.send(info.message);
+		if(info != undefined) res.json({message: info.message, status : info.status != undefined ? info.status : 401});
 		else 
 			req.logIn(user, {session: false}, async err => {
 				if(err) return res.json({message: 'Unable to register.', error: err});
@@ -61,7 +61,7 @@ router.put('/:id', async (req, res, next) => {
 	passport.authenticate('jwt', async (err, user, info) => {
 		if(err) console.log(err);
 		if(info != undefined) {
-			res.send(info.message);
+			res.json({message: info.message, status : info.status != undefined ? info.status : 401});
 			next();
 		} else {
 			if(user.id === req.params.id && req.body.id === req.params.id) // Check user is only trying to update themselves
@@ -83,7 +83,7 @@ router.get('/:id', async(req, res, next) => {
 			console.log(err);
 		
 		if(info != undefined){ 
-			res.send(info.message);
+			res.json({message: info.message, status : info.status != undefined ? info.status : 401});
 			next();
 		} else {
 			if(user.id === req.params.id) {
